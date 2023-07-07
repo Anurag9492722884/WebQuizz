@@ -21,6 +21,7 @@ function Navbar() {
       <Link to="/quizzes" className="is-light" style={{ marginLeft: "40px",color:'#fdfdfd' }}>Quizzes</Link>
       <Link to="/scores-page" className="is-light" style={{ marginLeft: "40px",color:'#fdfdfd' }}>Scores</Link>
       <Link to="/dashboard" className="is-light" style={{ marginLeft: "40px",color:'#fdfdfd' }}>Dashboard</Link>
+      <Link to="/contact-us" className="is-light" style={{ marginLeft: "40px",color:'#fdfdfd' }}>Contact Us</Link>
       
 
       <span className="is-light" style={{  cursor: "pointer",marginRight:"10px" }} onClick={handleLogout}>
