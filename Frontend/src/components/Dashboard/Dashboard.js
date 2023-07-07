@@ -5,7 +5,7 @@ function Dashboard() {
     return (
         <div className='Dashboard'>
        <Navbar/>
-        <h1 style={{ marginTop: "280px",marginLeft: "511px" }}>Welcome to User Dashboard, {gg.username}! </h1>
+        <h1 style={{ marginTop: "280px",marginLeft: "511px" ,color:"#415d83"}}>Welcome to User Dashboard, {gg.username}! </h1>
         </div>
     );
   }

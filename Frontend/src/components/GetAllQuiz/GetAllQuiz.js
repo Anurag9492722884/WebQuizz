@@ -65,13 +65,13 @@ return (
                                 <TableCell component="th" scope="row">
                                   {item.heading}
                                 </TableCell>
-                                <TableCell align="right"><Button className='play' onClick={()=> {
+                                <TableCell align="right"><Button className='play bg-primary' onClick={()=> {
                                 history("/modify-quiz",{state : {
                                     quiz_id : item.id,
                                     heading_of_quiz : item.heading
                                 }});
-                              }}>Modify something in this quiz</Button></TableCell>
-                                <TableCell align="right"><Button className="Deletingquiz" style={{ marginLeft: "7px" }} onClick={ async()=>{
+                              }} >Modify Quiz</Button></TableCell>
+                                <TableCell align="right"><Button className="Deletingquiz bg-danger" style={{ marginLeft: "7px" }} onClick={ async()=>{
                                 await axios.get(
                                   `http://localhost:7018/api/Quiz/deleteAQuiz/${item.id}`,{
                                       headers: {
@@ -91,7 +91,7 @@ return (
                                 <TableCell align="right"><Button onClick={()=>history("/add-a-question",{state : {
                                 quiz_id : item.id,
                                 heading_of_quiz : item.heading
-                            }})}>add one question to this quiz</Button></TableCell>
+                            }})} className="bg-success">add one question to this quiz</Button></TableCell>
                               </TableRow>
                             )) }
                           </TableBody>

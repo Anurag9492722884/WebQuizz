@@ -1,141 +1,179 @@
-import * as React from 'react';
-import { CssVarsProvider } from '@mui/joy/styles';
-import Sheet from '@mui/joy/Sheet';
-import Typography from '@mui/joy/Typography';
-import FormControl from '@mui/joy/FormControl';
-import FormLabel from '@mui/joy/FormLabel';
-import Input from '@mui/joy/Input';
-import Button from '@mui/joy/Button';
-import Link from '@mui/joy/Link';
-import { useState } from 'react'
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import '../Login/Login.css';
+import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import "react-toastify/dist/ReactToastify.css";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { toast, ToastContainer } from "react-toastify";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+const defaultTheme = createTheme();
 
 export default function Login() {
-    const [Username,setUsername] = useState('');
-    const [Password,setPassword] = useState('');
-    const [msg, setMsg] = useState('');
-    const history = useNavigate();
-    const handleLogin = async (e) => {
-        e.preventDefault();
-        try {
-          await axios.post('http://localhost:7018/api/auth/signin', {
-                username: Username,
-                password: Password
-            }).then(response => {
-                if (response.data.accessToken) {
-                  localStorage.setItem("user", JSON.stringify(response.data));
-                }
-            });
-            var gg = JSON.parse(localStorage.getItem("user"));
-            const name = gg.username;
-            const roles_array = gg.roles;
-            console.log(gg);
-            // await axios.post('http://localhost:5018/api/account/create', {
-            //     accountNumber: name,
-            //     currentBalance : 0.00,
-            // },
-            // {
-            //     headers: {
-            //         Authorization : 'Bearer ' + gg.accessToken
-            //     }
-            // });
-            if(roles_array.indexOf("ROLE_ADMIN")>-1){
-              history("/Admin-page");
-            }
-            else{
-              history("/dashboard");
-            }
-        } catch (error) {
-            if (error.response) {
-                setMsg(error.response.data.msg);
-            }
-        }
-    }
-    const handleLoginAdmin = async (e) => {
-      e.preventDefault();
-      try {
-        await axios.post('http://localhost:7018/api/auth/signin', {
-              username: Username,
-              password: Password
-          }).then(response => {
-              if (response.data.accessToken) {
-                localStorage.setItem("user", JSON.stringify(response.data));
-              }
-          });
-          var gg = JSON.parse(localStorage.getItem("user"));
-          const name = gg.username;
-          const roles_array = gg.roles;
-          if(roles_array.indexOf("ROLE_ADMIN")>-1){
-            history("/Admin-page");
-          }
-          if(roles_array.indexOf("ROLE_USER")>-1){
-            history("/dashboard");
-          }
-      } catch (error) {
-          if (error.response) {
-              setMsg(error.response.data.msg);
-          }
-      }
-  }
-  return (
-    <CssVarsProvider >
-      <main className='Login'>
-        <Sheet
-          sx={{
-            width: 300,
-            mx: 'auto', // margin left & right
-            my: 4, // margin top & botom
-            py: 3, // padding top & bottom
-            px: 2, // padding left & right
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 2,
-            borderRadius: 'sm',
-            boxShadow: 'md',
-          }}
-          variant="outlined"
-        >
-          <div>
-            <Typography level="h4" component="h1">
-              <b>Welcome!</b>
-            </Typography>
-            <Typography level="body2">Sign in to continue.</Typography>
-          </div>
-          <FormControl>
-            <FormLabel>Username</FormLabel>
-            <Input
-              // html input attribute
-              name="username"
-              type="text"
-              placeholder="Ankit"
-              value={Username} onChange={(e) => setUsername(e.target.value)}
-            />
-          </FormControl>
-          
-          <FormControl>
-            <FormLabel>Password</FormLabel>
-            <Input
-              // html input attribute
-              name="password"
-              type="password"
-              placeholder="password"
-              value={Password} onChange={(e) => setPassword(e.target.value)}
-            />
-          </FormControl>
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [msg, setMsg] = useState("");
+  const navigate = useNavigate();
 
-          <Button sx={{ mt: 1 /* margin top */ }} onClick={handleLogin}>Log in</Button>
-          <Button sx={{ mt: 1 /* margin top */ }} onClick={handleLoginAdmin}>Admin? Click here to login</Button>
-          <Typography
-            endDecorator={<Link href="/sign-up">Sign up</Link>}
-            fontSize="sm"
-            sx={{ alignSelf: 'center' }}
-          >
-            Don&apos;t have an account?
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:7018/api/auth/signin",
+        {
+          username: username,
+          password: password,
+        }
+      );
+
+      const { accessToken, roles } = response.data;
+      localStorage.setItem("user", JSON.stringify(response.data));
+
+      if (roles.includes("ROLE_ADMIN")) {
+        console.log(response);
+        // Redirect to admin page
+        toast("Logged In Successfully!");
+        navigate("/dashboard");
+      } else {
+        navigate("/dashboard");
+        toast("Logged In Successfully!");
+
+        // Redirect to dashboard
+      }
+    } catch (error) {
+      if (error.response) {
+        setMsg(error.response.data.msg);
+        toast.error(error.response.data.message);
+        console.log(error.response.data.message);
+      }
+    }
+  };
+
+  const handleLoginAdmin = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:7018/api/auth/signin",
+        {
+          username,
+          password,
+        }
+      );
+
+      if (response.data.accessToken) {
+        localStorage.setItem("user", JSON.stringify(response.data));
+      }
+
+      const gg = JSON.parse(localStorage.getItem("user"));
+      console.log(gg);
+      const name = gg.username;
+      const roles_array = gg.roles;
+
+      if (roles_array.indexOf("ROLE_ADMIN") > -1) {
+        toast("Logged In Successfully!");
+
+        navigate("/Admin-page");
+      }
+      if (roles_array.indexOf("ROLE_USER") > -1) {
+        toast("Logged In Successfully!");     
+
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      if (error.response) {
+        setMsg(error.response.data.msg);
+      }
+    }
+  };
+
+  return (
+    <ThemeProvider theme={defaultTheme}>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Welcome!
           </Typography>
-        </Sheet>
-      </main>
-    </CssVarsProvider>
+          <Typography variant="body2" color="text.secondary" align="center">
+            Sign in to continue.
+          </Typography>
+          <Box component="form" onSubmit={handleLogin} sx={{ mt: 1 }}>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="username"
+              label="Username"
+              name="username"
+              autoComplete="username"
+              autoFocus
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              onClick={handleLogin}
+            >
+              Log in
+            </Button>
+            <ToastContainer />
+            <Button
+              fullWidth
+              variant="text"
+              sx={{ mt: 2, mb: 2 }}
+              onClick={handleLoginAdmin}
+            >
+              Admin? Click here to login
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link
+                  component="button"
+                  variant="body2"
+                  onClick={() => navigate("/sign-up")}
+                >
+                  Don't have an account? Sign up
+                </Link>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+      </Container>
+    </ThemeProvider>
   );
 }

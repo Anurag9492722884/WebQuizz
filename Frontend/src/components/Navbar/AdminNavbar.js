@@ -13,11 +13,13 @@ function Navbar() {
         }
     }
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <a className="navbar-brand" href="/Admin-page">Welcome to quiz app Admin Panel</a>
+        <nav className="navbar navbar-expand-lg navbar-light " style={{backgroundColor:"#0459d8b5",color:"white",display:"flex",alignItems:"center"}}>
+        <a className="navbar-brand text-light" href="/Admin-page">Welcome to Admin Panel</a>
        
            
-            <a className="is-light Feature" onClick={Logout}>
+           
+            <a className="is-light Feature " onClick={Logout}>
+                
                                     Log Out
        </a>    
        </nav>
