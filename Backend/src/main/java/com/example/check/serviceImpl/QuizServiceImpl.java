@@ -14,7 +14,7 @@ import com.example.check.model.Score;
 import com.example.check.repository.QuestionRepository;
 import com.example.check.repository.QuizRepository;
 import com.example.check.repository.ScoreRepository;
-import com.example.check.repository.Transaction;
+// import com.example.check.repository.Transaction;
 import com.example.check.service.QuizService;
 
 @Service

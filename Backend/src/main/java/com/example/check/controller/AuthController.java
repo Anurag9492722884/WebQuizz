@@ -76,6 +76,7 @@ public class AuthController {
 
   @PostMapping("/signup")
   public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+    System.out.println("--------------");
     if (userRepository.existsByUsername(signUpRequest.getUsername())) {
       return ResponseEntity
           .badRequest()
@@ -95,6 +96,7 @@ public class AuthController {
 
     Set<String> strRoles = signUpRequest.getRole();
     System.out.println(strRoles);
+    System.out.println("check");
     Set<Role> roles = new HashSet<>();
 
     if (strRoles == null) {
@@ -102,6 +104,7 @@ public class AuthController {
           .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
       roles.add(userRole);
     } else {
+      System.out.println("rolenotfound");
       strRoles.forEach(role -> {
         switch (role) {
         case "admin":

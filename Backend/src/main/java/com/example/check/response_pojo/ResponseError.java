@@ -21,9 +21,9 @@ public class ResponseError {
     private String message;
     private String details;
     
-	public ResponseError() {
-		super();
-	}
+	// public ResponseError() {
+	// 	super();
+	// }
 	public ResponseError(Date timestamp, String message, String details) {
 		super();
 		this.timestamp = timestamp;
